@@ -1,0 +1,34 @@
+server:
+  port: 9097
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: EmlakBurada-for-hepsiemlak
+          uri: http://localhost:8097
+          predicates:
+            - Path=/adverts/**, /enrollees/**, /advertPockets/**, /activateAdvertStatus/**, /updateAdvertStatusPassive/**, /updateAdvertStatusActive/**
+            - Method=GET,POST,PUT
+        - id: EmlakBuradaPaymentSystem
+          uri: http://localhost:8091
+          predicates:
+            - Path=/payments/**
+            - Method=POST
+        - id: EmlakBurada-Auth
+          uri: http://localhost:8082
+          predicates:
+            - Path=/auths/**
+            - Method=POST
+
+main:
+  allow-bean-definition-overriding: true
+  web-application-type: reactive
+
+
+
+logging:
+  level:
+    '[org.springframework.security]': TRACE
+
+
